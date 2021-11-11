@@ -20,6 +20,11 @@ jobs:
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
 
+      - name: Login to DockerHub Container Registry
+        run: echo $DOCKER_HUB_TOKEN | docker login -u lemonpro --password-stdin
+        env:
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+
       - name: Build a container image from our Spring Boot app using Paketo.io / Cloud Native Build Packs
         run: cd state-finder-api && mvn spring-boot:build-image --batch-mode --no-transfer-progress
 
@@ -27,23 +32,8 @@ jobs:
         run: |
           docker tag state-finder-api:1.0.0-SNAPSHOT ghcr.io/lemonprogis/state-finder-api:latest
           docker push ghcr.io/lemonprogis/state-finder-api:latest
-  build-with-paketo-push-2-dockerhub:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
-      - name: Login to DockerHub Container Registry
-        run: echo $DOCKER_HUB_TOKEN | docker login -u lemonpro --password-stdin
-        env:
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: Install pack CLI via the official buildpack Action https://github.com/buildpacks/github-actions#setup-pack-cli-action
-        uses: buildpacks/github-actions/setup-pack@v4.4.2
-
-      - name: Build app with pack CLI using Buildpack Cache image (see https://buildpacks.io/docs/app-developer-guide/using-cache-image/) & publish to Docker Hub
+      - name: Tag & push to DockerHub Registry
         run: |
-          pack build index.docker.io/lemonpro/state-finder-api:latest \
-              --builder paketobuildpacks/builder:base \
-              --path ./state-finder-api \
-              --cache-image index.docker.io/lemonpro/state-finder-api:latest \
-              --publish
+          docker tag ghcr.io/lemonprogis/state-finder-api:latest index.docker.io/lemonpro/state-finder-api:latest
+          docker push index.docker.io/lemonpro/state-finder-api:latest
