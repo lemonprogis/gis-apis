@@ -21,11 +21,11 @@ jobs:
           CR_PAT: ${{ secrets.CR_PAT }}
 
       - name: Build a container image from our Spring Boot app using Paketo.io / Cloud Native Build Packs
-        run: mvn spring-boot:build-image --batch-mode --no-transfer-progress
+        run: cd state-finder-api && mvn spring-boot:build-image --batch-mode --no-transfer-progress
 
       - name: Tag & publish to GitHub Container Registry
         run: |
-          docker tag state-finder-api:0.0.1-SNAPSHOT ghcr.io/lemonprogis/state-finder-api:latest
+          docker tag state-finder-api:1.0.0-SNAPSHOT ghcr.io/lemonprogis/state-finder-api:latest
           docker push ghcr.io/lemonprogis/state-finder-api:latest
   build-with-paketo-push-2-dockerhub:
     runs-on: ubuntu-latest
@@ -44,6 +44,6 @@ jobs:
         run: |
           pack build index.docker.io/lemonpro/state-finder-api:latest \
               --builder paketobuildpacks/builder:base \
-              --path . \
+              --path ./state-finder-api \
               --cache-image index.docker.io/lemonpro/state-finder-api:latest \
               --publish
