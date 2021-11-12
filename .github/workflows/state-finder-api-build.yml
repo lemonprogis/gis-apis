@@ -25,8 +25,11 @@ jobs:
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build a container image from our Spring Boot app using Paketo.io / Cloud Native Build Packs
-        run: cd state-finder-api && mvn spring-boot:build-image --batch-mode --no-transfer-progress
+      - name: Maven build and containerize application
+        run: |
+          cd state-finder-api
+          mvn verify
+          docker build -t state-finder-api:1.0.0-SNAPSHOT .
 
       - name: Tag & publish to GitHub Container Registry
         run: |

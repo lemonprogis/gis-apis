@@ -1,0 +1,3 @@
+data:
+  shapefiles:
+    us-states: classpath:data/us_states/cb_2018_us_state_500k.shp
