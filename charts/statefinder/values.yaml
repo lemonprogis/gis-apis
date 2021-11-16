@@ -1,0 +1,19 @@
+replicaCount: 1
+
+namespaceOverride: "gis"
+nameOverride: "state-finder"
+fullnameOverride: "state-finder"
+
+fullImageName: "lemonpro/state-finder-api:latest"
+imagePullPolicy: Always
+imagePullSecrets: []
+
+containerPort: 8080
+
+contextPath: "/state-finder"
+
+startupFailureThreshold: 3
+livenessFailureThreshold: 3
+readinessFailureThreshold: 1
+
+javaOpts: "-Dserver.port=8080"

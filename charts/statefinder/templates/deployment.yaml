@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fullnameOverride }}
+  namespace: {{ .Values.namespaceOverride }}
+spec:
+  progressDeadlineSeconds: 120
+  selector:
+    matchLabels:
+      app: {{ .Values.fullnameOverride }}
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fullnameOverride }}
+    spec:
+      containers:
+        - name: {{ .Values.fullnameOverride }}
+          image: {{ .Values.fullImageName }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+            limits:
+              cpu: "400m"
+              memory: "800Mi"
+            requests:
+              cpu: "300m"
+              memory: "700Mi"
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: {{ .Values.javaOpts }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: "{{ .Values.contextPath }}/health"
+              port: http
+            failureThreshold: {{ .Values.startupFailureThreshold }}
+          livenessProbe:
+            httpGet:
+              path: "{{ .Values.contextPath }}/health"
+              port: http
+            failureThreshold: {{ .Values.livenessFailureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: "{{ .Values.contextPath }}/health"
+              port: http
+            failureThreshold: {{ .Values.readinessFailureThreshold }}
