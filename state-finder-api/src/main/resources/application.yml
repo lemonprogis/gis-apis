@@ -1,10 +1,13 @@
 spring:
   application:
     name: state-finder-api
+  webflux:
+    base-path: /state-finder
 
-server:
-  servlet:
-    context-path: /state-finder
+management:
+  endpoints:
+    web:
+      base-path: /
 
 data:
   shapefiles:

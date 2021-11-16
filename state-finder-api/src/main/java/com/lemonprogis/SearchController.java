@@ -16,7 +16,7 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    @GetMapping("/find-state")
+    @GetMapping
     public UsState findStateByLatLng(
             @RequestParam String lat, @RequestParam String lng) throws IOException, CQLException {
         return searchService.searchPointInState(lat, lng);
