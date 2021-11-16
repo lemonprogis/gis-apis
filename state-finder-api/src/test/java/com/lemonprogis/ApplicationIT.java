@@ -45,7 +45,7 @@ class ApplicationIT {
 	public void poiEndpointTests() throws IOException {
 		// ACT and ASSERT
 		webTestClient.get()
-				.uri("/find-state?lat=35.456&lng=-92.985")
+				.uri("?lat=35.456&lng=-92.985")
 				.exchange()
 				.expectStatus()
 				.is2xxSuccessful()
