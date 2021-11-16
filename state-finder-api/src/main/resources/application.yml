@@ -5,11 +5,19 @@ spring:
     base-path: /state-finder
 
 management:
+  endpoint:
+    health:
+      enabled: true
   endpoints:
     web:
       base-path: /
       exposure:
         include: '*'
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
 
 data:
   shapefiles:
