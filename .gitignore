@@ -159,3 +159,6 @@ buildNumber.properties
 # "temporary" build files
 /target
 /state-finder-api/.factorypath
+.DS_Store
+target
+node_modules
