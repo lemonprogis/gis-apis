@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java:11
+FROM gcr.io/distroless/java:11-nonroot
 COPY src/main/resources/data data
 COPY target/*.jar app.jar
 EXPOSE 8080
