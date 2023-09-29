@@ -9,16 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: 17
-
-      - name: Login to GitHub Container Registry
-        run: echo $CR_PAT | docker login ghcr.io -u lemonprogis --password-stdin
-        env:
-          CR_PAT: ${{ secrets.CR_PAT }}
 
       - name: Login to DockerHub Container Registry
         run: echo $DOCKER_HUB_TOKEN | docker login -u lemonpro --password-stdin
@@ -31,12 +26,7 @@ jobs:
           mvn verify
           docker build -t state-finder-api:1.0.0-SNAPSHOT .
 
-      - name: Tag & publish to GitHub Container Registry
-        run: |
-          docker tag state-finder-api:1.0.0-SNAPSHOT ghcr.io/lemonprogis/state-finder-api:latest
-          docker push ghcr.io/lemonprogis/state-finder-api:latest
-
       - name: Tag & push to DockerHub Registry
         run: |
-          docker tag ghcr.io/lemonprogis/state-finder-api:latest index.docker.io/lemonpro/state-finder-api:latest
+          docker tag state-finder-api:1.0.0-SNAPSHOT index.docker.io/lemonpro/state-finder-api:latest
           docker push index.docker.io/lemonpro/state-finder-api:latest
