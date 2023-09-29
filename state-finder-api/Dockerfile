@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java:17-nonroot
+FROM gcr.io/distroless/java17-debian12
 COPY src/main/resources/data data
 COPY target/*.jar app.jar
 EXPOSE 8080
